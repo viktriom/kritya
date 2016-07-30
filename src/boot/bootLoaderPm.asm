@@ -17,11 +17,11 @@ call switch_to_pm		;Note that we never return from here.
 
 ;jmp $
 
-%include "printString.asm"
-%include "gdt.asm"
-%include "printStringPm.asm"
-%include "protectedMode.asm"
-%include "diskLoad.asm"
+%include "includes/printString.asm"
+%include "includes/gdt.asm"
+%include "includes/printStringPm.asm"
+%include "includes/protectedMode.asm"
+%include "includes/diskLoad.asm"
 
 ;This is where we arrive after switching to and initializing protected mode.
 

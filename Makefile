@@ -21,7 +21,7 @@ run: all
 
 #Actual disk image loaded by the computer
 #this will be a combination of compiled bootsector and kernel
-os-image: boot/bootsect.bin kernel.bin
+os_image: boot/bootLoaderPm.bin kernel.bin
 	cat &^ > os_image
 
 #build the binary of kernel
@@ -36,7 +36,7 @@ kernel.bin : kernel/kernelEntry.o ${OBJ}
 	gcc -ffreestanding -m32 -c $< -o $@
 
 #Assemble the kernelEntry
-%.0 : %.asm
+%.o : %.asm
 	nasm $< -f elf -o $@
 
 %.bin : %.asm
