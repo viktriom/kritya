@@ -3,21 +3,45 @@
 # 2. $< -> refers to the first dependency
 # 3. $@ -> refers to the target file.
 
+#List of files
+C_SOURCES = $(wildcard kernel/*.c drivers/*.c)
+HEADERS = $(wildcard kernel/*.h drivers/*.h)
+
+# TODO: Make sources dep on all headers files.
+
+#convert *.c files to *.o fto gice a list of object files to build.
+OBJ = ${C_SOURCES:.c=.o}
+
 #the default target
-all: kernel.bin
+all: os_image
 
-#link the kernel files together.
-kernel.bin : kernelEntry.o kernel.o
-	ld -m elf_i386 -o kernel.bin -Ttext 0x1000 $^ --oformat binary
+#target for running the application
+run: all
+	qemu-system-i386 os_iamge
 
-# Build the kernel object file
-kernel.o : kernel.c
+#Actual disk image loaded by the computer
+#this will be a combination of compiled bootsector and kernel
+os-image: boot/bootsect.bin kernel.bin
+	cat &^ > os_image
+
+#build the binary of kernel
+# -the kernel entry which jumps to main()
+# -the compiles c kernel
+kernel.bin : kernel/kernelEntry.o ${OBJ}
+	ld -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
+
+#Generic rule for compilation of C code to object file.
+#C files depend on all header files for simplicity
+%.o : %.c ${HEADERS}
 	gcc -ffreestanding -m32 -c $< -o $@
 
-# Build the kernel entry object file.
-kernelEntry.o : kernelEntry.asm
+#Assemble the kernelEntry
+%.0 : %.asm
 	nasm $< -f elf -o $@
 
+%.bin : %.asm
+	nasm $< -f bin -I '../../16bit/' -o $@
 
 clean:
-	rm -f *.bin *.o
+	rm -rf *.bin *.dis *.o os_image
+	rm -rf kernel/*.0 boot/*.bin drivers/*.0
