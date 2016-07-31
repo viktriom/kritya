@@ -27,20 +27,20 @@ os_image: boot/bootLoaderPm.bin kernel.bin
 #build the binary of kernel
 # -the kernel entry which jumps to main()
 # -the compiles c kernel
-kernel.bin : kernel/kernelEntry.o ${OBJ}
+kernel.bin: kernel/kernelEntry.o ${OBJ}
 	ld -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
 
 #Generic rule for compilation of C code to object file.
 #C files depend on all header files for simplicity
-%.o : %.c ${HEADERS}
+%.o: %.c ${HEADERS}
 	gcc -ffreestanding -m32 -c $< -o $@
 
 #Assemble the kernelEntry
-%.o : %.asm
+%.o: %.asm
 	nasm $< -f elf -o $@
 
-%.bin : %.asm
-	nasm $< -f bin -I '../../16bit/' -o $@
+%.bin: %.asm
+	nasm $< -f bin -I 'src/boot/includes/' -o $@
 
 clean:
 	rm -rf *.bin *.dis *.o os_image
