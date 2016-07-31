@@ -1,3 +1,8 @@
 .architect
 build/
 .DS*
+*.bin
+*.o
+os_image
+*.dis
+*.xcodeproj/*
