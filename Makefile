@@ -44,4 +44,11 @@ kernel.bin: kernel/kernelEntry.o ${OBJ}
 
 clean:
 	rm -rf *.bin *.dis *.o os_image
-	rm -rf kernel/*.0 boot/*.bin drivers/*.0
+	rm -rf kernel/*.o boot/*.bin drivers/*.o
+
+
+#nasm bootLoaderPm.asm -f bin -o bootLoaderPm.out
+#nasm kernelEntry.asm -f elf -o kernelEntry.out
+#gcc -ffreestanding -m32 -c kernel.c -o kernel.o
+#i386-elf-ld -m elf_i386 -o kernel.bin -Ttext 0x1000 kernelEntry.out kernel.o --oformat binary
+#

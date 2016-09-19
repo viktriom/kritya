@@ -28,8 +28,8 @@ call switch_to_pm		;Note that we never return from here.
 [bits 16]
 
 load_kernel:
-    mov bx, MSG_LOAD_KERNEL     ;Display loading kernel message
-    call print_string_real
+    mov si, MSG_LOAD_KERNEL     ;Display loading kernel message
+    call print_string_real		
 
     mov bx, KERNEL_OFFSET
     mov dh, 15
