@@ -6,6 +6,8 @@
 #List of files
 C_SOURCES = $(wildcard kernel/*.c drivers/*.c)
 HEADERS = $(wildcard kernel/*.h drivers/*.h)
+ASM_SOURCES = $(wildcard src/boot/*.asm)
+ARMGNU ?= /Users/sonu/dev/proj/kritya-arm/dnlds/yagarto-4.7.2/arm-none-eabi/bin/
 
 # TODO: Make sources dep on all headers files.
 
@@ -21,26 +23,26 @@ run: all
 
 #Actual disk image loaded by the computer
 #this will be a combination of compiled bootsector and kernel
-os_image: boot/bootLoaderPm.bin kernel.bin
+os_image: bootLoaderPm.bin kernel.bin
 	cat &^ > os_image
 
 #build the binary of kernel
 # -the kernel entry which jumps to main()
 # -the compiles c kernel
-kernel.bin: kernel/kernelEntry.o ${OBJ}
-	ld -m elf_i386 -o $@ -Ttext 0x1000 $^ --oformat binary
+kernel.bin: kernelEntry.o ${OBJ}
+	$(ARMGNU)ld -m armelf -o $@ -Ttext 0x1000 $^
 
 #Generic rule for compilation of C code to object file.
 #C files depend on all header files for simplicity
 %.o: %.c ${HEADERS}
-	gcc -ffreestanding -m32 -c $< -o $@
+	gcc -ffreestanding -armelf -c $< -o $@
 
 #Assemble the kernelEntry
-%.o: %.asm
-	nasm $< -f elf -o $@
+kernelEntry.o: src/kernel/kernelEntry.asm
+	nasm $< -f as86 -o $@
 
-%.bin: %.asm
-	nasm $< -f bin -I 'src/boot/includes/' -o $@
+bootLoaderPm.bin: ${ASM_SOURCES}
+	nasm $< -f bin -I 'src/boot/' -o $@
 
 clean:
 	rm -rf *.bin *.dis *.o os_image
