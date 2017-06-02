@@ -27,7 +27,7 @@ os_image: src/boot/bootLoaderPm.bin kernel.bin
 #build the binary of kernel
 # -the kernel entry which jumps to main()
 # -compiles compiles c kernel
-kernel.bin: src/kernel/kernelEntry.o ${OBJ}
+kernel.bin: src/kernel/kernelEntry.o kernel.o
 	ld -o $@ -Ttext 0x1000 $^ --oformat binary
 
 #Generic rule for compilation of C code to object file.
