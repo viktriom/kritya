@@ -44,4 +44,4 @@ kernel.bin: src/kernel/kernelEntry.o ${OBJ}
 
 clean:
 	rm -rf *.bin *.dis *.o os_image
-	rm -rf kernel/*.o boot/*.bin drivers/*.o
+	rm -rf src/kernel/*.o src/boot/*.bin src/drivers/*.o
