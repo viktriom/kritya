@@ -22,7 +22,7 @@ run: all
 #Actual disk image loaded by the computer
 #this will be a combination of compiled bootsector and kernel
 os_image: src/boot/bootLoaderPm.bin src/kernel/kernel.bin
-	cat &^ > os_image
+	cat src/boot/bootLoaderPm.bin src/kernel/kernel.bin > os_image
 
 #build the binary of kernel
 # -the kernel entry which jumps to main()
