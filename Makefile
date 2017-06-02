@@ -21,13 +21,13 @@ run: all
 
 #Actual disk image loaded by the computer
 #this will be a combination of compiled bootsector and kernel
-os_image: boot/bootLoaderPm.bin kernel.bin
+os_image: src/boot/bootLoaderPm.bin kernel.bin
 	cat &^ > os_image
 
 #build the binary of kernel
 # -the kernel entry which jumps to main()
 # -compiles compiles c kernel
-kernel.bin: kernelEntry.o ${OBJ}
+kernel.bin: src/kernel/kernelEntry.o ${OBJ}
 	ld -m armelf -o $@ -Ttext 0x1000 $^
 
 #Generic rule for compilation of C code to object file.
