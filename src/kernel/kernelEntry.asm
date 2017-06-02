@@ -1,4 +1,4 @@
-;exsures that we jump straight into kernel's entry function
+;ensures that we jump straight into kernel's entry function
 
 [bits 32]           ;we are in the protected mode
 [extern main]       ;Declare that we will be refrencing an external symbol 'main' 
