@@ -3,7 +3,13 @@
 
 switch_to_pm:   ;switch to protected mode
 
+mov si,MSG_DEBUG_0
+call print_string_real
+
 cli 			;We must switch of interrupts until we have set-up the protected move interupt vector otherwise interrupts will run riot.
+
+mov si, MSG_DEBUG_1
+call print_string_real
 
 lgdt [gdt_descriptor] 	;load our global descriptor table which defines the protected mode segment (e.g. for code and data)
 
@@ -45,3 +51,5 @@ call BEGIN_PM		;Finally, call some well-known label.
 
 MSG_GDT_LOADED: db "The GDT Loaded Successfully, now attempting to switch the processor",0
 MSG_ENTERED_PM: db "Successfully entered into Protected Mode",0
+MSG_DEBUG_0: db "switch_to_pm Called, now clearing interrupts.",0
+MSG_DEBUG_1: db "Interrups cleared, loading descriptor table..",0

@@ -6,6 +6,7 @@
 #List of files
 C_SOURCES = $(wildcard kernel/*.c drivers/*.c)
 HEADERS = $(wildcard kernel/*.h drivers/*.h)
+BIN=$(wildcard kernel/*.bin boot/*.bin)
 
 # TODO: Make sources dep on all headers files.
 
@@ -21,7 +22,7 @@ run: all
 
 #Actual disk image loaded by the computer
 #this will be a combination of compiled bootsector and kernel
-os_image: src/boot/bootLoaderPm.bin src/kernel/kernel.bin
+os_image: ${BIN}
 	cat src/boot/bootLoaderPm.bin src/kernel/kernel.bin > os_image
 
 #build the binary of kernel
